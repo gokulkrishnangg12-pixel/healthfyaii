@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="glass-card text-center">
+    <h2 class="mb-1">Step 1: Scan Expiry Date</h2>
+    <p class="mb-2" style="color: var(--text-light);">Upload an image of the expiry date to verify product safety.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="file" name="expiry_image" accept="image/*" required>
+        </div>
+        <button type="submit" class="btn">Next: Scan Ingredients</button>
+    </form>
+</div>
+{% endblock %}

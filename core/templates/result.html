@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="glass-card">
+    <div class="text-center mb-2">
+        <h2 class="mb-1">Analysis Complete</h2>
+        
+        <div class="score-circle grade-{{ result.grade }}">
+            <h2>{{ result.grade }}</h2>
+            <span>Score: {{ result.health_score }}</span>
+        </div>
+        
+        <div style="margin-top: 1.5rem;">
+            {% if result.expiry_date %}
+                <h4>Expiry Date: {{ result.expiry_date }}</h4>
+                {% if result.is_expired %}
+                    <span class="badge high">Product is Expired!</span>
+                {% else %}
+                    <span class="badge low">Date is Valid</span>
+                {% endif %}
+            {% else %}
+                <p style="color: var(--text-light);">No expiry date provided.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% if result.warnings %}
+    <div class="mb-2">
+        <h3 class="mb-1">Health Alerts</h3>
+        {% for warning in result.warnings %}
+        <div class="alert-box">
+            ⚠ {{ warning }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="mb-2">
+        <h3 class="mb-1">Dietary & Nutrition Breakdown</h3>
+        <div class="list-group">
+            <div class="list-item" style="display: flex; justify-content: space-between;">
+                <strong>Preservatives Level:</strong>
+                <span class="badge {{ result.nutrition_levels.preservatives|lower }}">{{ result.nutrition_levels.preservatives }}</span>
+            </div>
+            <div class="list-item" style="display: flex; justify-content: space-between;">
+                <strong>Additives Level:</strong>
+                <span class="badge {{ result.nutrition_levels.additives|lower }}">{{ result.nutrition_levels.additives }}</span>
+            </div>
+            <div class="list-item" style="display: flex; justify-content: space-between;">
+                <strong>Sugar Level:</strong>
+                <span>{{ result.nutrition_levels.sugar_level }}</span>
+            </div>
+            <div class="list-item" style="display: flex; justify-content: space-between;">
+                <strong>Fat Level:</strong>
+                <span>{{ result.nutrition_levels.fat_level }}</span>
+            </div>
+            <div class="list-item" style="display: flex; justify-content: space-between;">
+                <strong>Carb Level:</strong>
+                <span>{{ result.nutrition_levels.carb_level }}</span>
+            </div>
+            <div class="list-item">
+                <strong style="display: block; margin-bottom: 0.25rem;">Other Injurious Substances:</strong>
+                <span style="color: var(--text-light);">{{ result.nutrition_levels.other_injurious_substances }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-2">
+        <h3 class="mb-1">Ingredient Breakdown</h3>
+        <div class="list-group">
+            {% for log in result.ingredients.all %}
+            <div class="list-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <h4 style="margin:0;">{{ log.ingredient_name }}</h4>
+                    <span class="badge {{ log.risk_level|lower }}">{{ log.risk_level }} Risk</span>
+                </div>
+                <p>{{ log.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% if result.alternatives.exists %}
+    <div class="mb-2">
+        <h3 class="mb-1">Healthier Alternatives</h3>
+        {% for alt in result.alternatives.all %}
+        <div class="recommendation-card">
+            <div class="recommendation-img">💡</div>
+            <div class="recommendation-content">
+                <h4 style="margin-bottom:0.25rem; color:var(--primary);">{{ alt.suggestion_name }}</h4>
+                <p style="font-size:0.9rem; color:var(--text-light);">{{ alt.reason }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="text-center">
+        <a href="{% url 'index' %}" class="btn secondary">Scan Another Product</a>
+    </div>
+</div>
+{% endblock %}

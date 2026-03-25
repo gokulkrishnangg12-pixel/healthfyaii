@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="glass-card text-center">
+    <h2 class="mb-1">Step 2: Scan Ingredients Label</h2>
+    <p class="mb-2" style="color: var(--text-light);">Instantly analyze ingredients for harmful additives based on your personal health profile.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="file" name="label_image" accept="image/*" required>
+        </div>
+        <button type="submit" class="btn">Analyze Product</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="glass-card">
+    <h2 class="mb-1 text-center">Your Health Profile</h2>
+    <p class="mb-2 text-center" style="color: var(--text-light);">Personalize your analysis by adding your medical conditions and dietary preferences.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" value="{{ profile.name|default:'Demo User' }}">
+        </div>
+        
+        <div class="toggle-item">
+            <div>
+                <strong>Diabetes</strong>
+                <p style="font-size: 0.85rem; color: var(--text-light);">Alert for added sugars</p>
+            </div>
+            <input type="checkbox" name="diabetes" {% if profile.diabetes %}checked{% endif %}>
+        </div>
+        
+        <div class="toggle-item">
+            <div>
+                <strong>Hypertension</strong>
+                <p style="font-size: 0.85rem; color: var(--text-light);">Alert for high sodium</p>
+            </div>
+            <input type="checkbox" name="hypertension" {% if profile.hypertension %}checked{% endif %}>
+        </div>
+        
+        <div class="toggle-item">
+            <div>
+                <strong>Vegan Diet</strong>
+                <p style="font-size: 0.85rem; color: var(--text-light);">Alert for animal products</p>
+            </div>
+            <input type="checkbox" name="vegan" {% if profile.vegan %}checked{% endif %}>
+        </div>
+        
+        <button type="submit" class="btn" style="margin-top: 1.5rem;">Save Preferences</button>
+    </form>
+</div>
+{% endblock %}
